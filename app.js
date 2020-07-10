@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     var cardsChosen = []
     var cardsChosenId = []
     var cardsWon = []
-    
+    var cardIdsRevealed =[]
+    var maxLives = 3;
 
     //create your board
     function createBoard() {
@@ -79,37 +80,53 @@ document.addEventListener('DOMContentLoaded', () => {
         cardsChosen.push(cardArray[cardId].name )
         cardsChosenId.push(cardId)
         this.setAttribute('src', cardArray[cardId].img)
+        
         if(cardsChosen.length === 2){
             setTimeout (checkForMatch,500)
         }
+
     }
+    function liveCounter(cardIdOne,cardIdTwo){
+        cardIdsRevealed.push(cardIdOne);
+        cardIdsRevealed.push(cardIdTwo);
 
+        if(cardIdsRevealed.includes(cardIdTwo))
+            maxLives--;
+        
+        console.log('cardIdsShow:',cardIdsRevealed);
+    }
+    
     function checkForMatch(){
-        var cards = document.querySelectorAll('img')
-        const optionOneId= cardsChosenId[0]
-        const optionTwoId= cardsChosenId[1]
+        var cards = document.querySelectorAll('img') 
+        const optionOneId = cardsChosenId[0]
+        const optionTwoId = cardsChosenId[1]
 
-        if(optionOneId == optionTwoId) {
+        if(cardsChosenId[0] == cardsChosenId[1]) {
             cards[optionOneId].setAttribute('src', 'images/focus.png')
             cards[optionTwoId].setAttribute('src', 'images/focus.png')
             alert('You have clicked the same image!')
           }
-        else if(cardsChosen[0]===cardsChosen[1]){
+        else if(cardsChosen[0] === cardsChosen[1]){
             alert('You found a Match')
             cards[optionOneId].setAttribute('src', 'images/tick.png')
             cards[optionTwoId].setAttribute('src', 'images/tick.png')
             cards[optionOneId].removeEventListener('click', flipCard)
             cards[optionTwoId].removeEventListener('click', flipCard)
             cardsWon.push(cardsChosen)
+            console.log(cardsWon);
         }
         else{
             cards[optionOneId].setAttribute('src', 'images/focus.png')
             cards[optionTwoId].setAttribute('src', 'images/focus.png')
+    
+            liveCounter(optionOneId,optionTwoId)
+            console.log("Counter=",maxLives);
+                
             alert("Try Again")
         }
         cardsChosen = []
         cardsChosenId = []
-        resultDisplay.textContent = " "+cardsWon.length
+        resultDisplay.textContent = " "+ cardsWon.length
 
         if (cardsWon.length === cardArray.length/2) {
             resultDisplay.textContent=" Congratulations! Your memory works."
