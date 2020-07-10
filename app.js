@@ -57,13 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
    
     const grid = document.querySelector('.grid')
     const resultDisplay = document.querySelector('#result')
-    
+    const livesDisplay = document.querySelector('#liveCounter')
+
     var cardsChosen = []
     var cardsChosenId = []
     var cardsWon = []
     var cardIdsRevealed =[]
     var maxLives = 3;
-
+    livesDisplay.textContent=  " "+ maxLives;
+    resultDisplay.textContent = " "+ cardsWon.length
     //create your board
     function createBoard() {
       for (let i = 0; i < cardArray.length; i++) {
@@ -120,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cards[optionTwoId].setAttribute('src', 'images/focus.png')
     
             liveCounter(optionOneId,optionTwoId)
+            livesDisplay.textContent= maxLives;
             console.log("Counter=",maxLives);
                 
             alert("Try Again")
