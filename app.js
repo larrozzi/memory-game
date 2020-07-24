@@ -63,9 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
     var cardsChosenId = []
     var cardsWon = []
     var cardIdsRevealed =[]
+    var cardsRevealed =[]
     var maxLives = 3;
     livesDisplay.textContent=  " "+ maxLives;
     resultDisplay.textContent = " "+ cardsWon.length
+
     //create your board
     function createBoard() {
       for (let i = 0; i < cardArray.length; i++) {
@@ -88,16 +90,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     }
+    // function liveCounter(cardIdOne,cardIdTwo){
+        
+
+    //     if(cardIdsRevealed.includes(cardIdTwo))
+    //         maxLives--;
+        
+    //     cardIdsRevealed.push(cardIdOne);
+    //     cardIdsRevealed.push(cardIdTwo);
+
+    //     console.log('cardIdsShow:',cardIdsRevealed);
+    // }
+    
     function liveCounter(cardIdOne,cardIdTwo){
+        const cardOne=cardArray[cardIdOne].name
+        const cardTwo=cardArray[cardIdTwo].name
+        
+        if(cardsRevealed.includes(cardOne) && cardsRevealed.includes(cardTwo) ){
+            maxLives--;
+        }
+        else if(cardsRevealed.includes(cardOne)&& !cardIdsRevealed.includes(cardIdOne)){
+            console.log('here1');
+            //if(cardsRevealed.filter(x => x===cardTwo).length >= 2)
+                maxLives--;
+        }
+        else if(cardsRevealed.includes(cardTwo)){
+            console.log('here2');
+            maxLives--;
+        }
+        cardsRevealed.push(cardOne);
+        cardsRevealed.push(cardTwo);
         cardIdsRevealed.push(cardIdOne);
         cardIdsRevealed.push(cardIdTwo);
-
-        if(cardIdsRevealed.includes(cardIdTwo))
-            maxLives--;
-        
-        console.log('cardIdsShow:',cardIdsRevealed);
+        console.log('cardsRevealed:',cardsRevealed);
     }
-    
+
     function checkForMatch(){
         var cards = document.querySelectorAll('img') 
         const optionOneId = cardsChosenId[0]
@@ -122,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cards[optionTwoId].setAttribute('src', 'images/focus.png')
     
             liveCounter(optionOneId,optionTwoId)
-            livesDisplay.textContent= maxLives;
+            livesDisplay.textContent = maxLives;
             console.log("Counter=",maxLives);
                 
             alert("Try Again")
